@@ -3,20 +3,18 @@ import matplotlib.pyplot as plt
 from numpy.linalg import norm
 from sklearn.datasets import make_blobs
 
-# KMeans Algorithm Implementation
 class KMeans:
     def __init__(self, n_clusters=3, init_method='random', max_iter=300):
         self.n_clusters = n_clusters
         self.init_method = init_method
         self.max_iter = max_iter
         self.centroids = None
-        self.history = []  # To store step-by-step updates
+        self.history = []
 
     def fit(self, X, manual_centroids=None):
         self.X = X
         self.n_samples, self.n_features = X.shape
 
-        # Handle manual initialization separately
         if self.init_method == 'manual':
             if manual_centroids is None:
                 raise ValueError("Manual centroids must be provided for manual initialization.")
@@ -33,12 +31,8 @@ class KMeans:
         self.history.append(self.centroids.copy())
 
         for i in range(self.max_iter):
-            # Assign clusters
             labels = self._assign_clusters()
-
-            # Calculate new centroids
             new_centroids = self._calculate_new_centroids(labels)
-
             if np.all(new_centroids == self.centroids):
                 break
 
@@ -83,7 +77,6 @@ class KMeans:
         return np.argmin(distances, axis=1)
 
 
-# Function to generate dummy data
 def generate_data(n_samples=300, n_features=2):
     X, _ = make_blobs(n_samples=n_samples, centers=3, n_features=n_features, random_state=42)
     return X
